@@ -1,16 +1,11 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
-import puppeteer from "puppeteer-core";
+import puppeteer from "puppeteer";
 let date = new Date();
-const chrome = require("chrome-aws-lambda");
 
 export async function GET() {
-  const browser = await puppeteer.launch({
-    args: chrome.args,
-    executablePath: await chrome.executablePath,
-    headless: chrome.headless,
-  });
+  const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto("https://beyblade.takaratomy.co.jp/beyblade-x/lineup/");
 
