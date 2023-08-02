@@ -1,0 +1,85 @@
+{
+  "updateAt": "2023-08-02T11:36:33.979Z",
+  "beybladeData": [
+    {
+      "title": "BX-13ナイトランス4-80HN",
+      "price": "¥1,400（税込）",
+      "link": "https://beyblade.takaratomy.co.jp/beyblade-x/lineup/bx13.html",
+      "parts": {
+        "blade": "ナイトランス",
+        "ratchet": "4-80",
+        "bit": "HN"
+      }
+    },
+    {
+      "title": "BX-00ドランザースパイラル3-80T",
+      "price": "¥1,600（税込）",
+      "link": "https://beyblade.takaratomy.co.jp/beyblade-x/lineup/bx00-ds.html",
+      "parts": {
+        "blade": "ドランザースパイラル",
+        "ratchet": "3-80",
+        "bit": "T"
+      }
+    },
+    {
+      "title": "BX-06ナイトシールド3-80N",
+      "price": "¥1,400（税込）",
+      "link": "https://beyblade.takaratomy.co.jp/beyblade-x/lineup/bx06.html",
+      "parts": {
+        "blade": "ナイトシールド",
+        "ratchet": "3-80",
+        "bit": "N"
+      }
+    },
+    {
+      "title": "BX-05ウィザードアロー4-80B",
+      "price": "¥1,400（税込）",
+      "link": "https://beyblade.takaratomy.co.jp/beyblade-x/lineup/bx05.html",
+      "parts": {
+        "blade": "ウィザードアロー",
+        "ratchet": "4-80",
+        "bit": "B"
+      }
+    },
+    {
+      "title": "BX-04ナイトシールド3-80N",
+      "price": "¥1,980（税込）",
+      "link": "https://beyblade.takaratomy.co.jp/beyblade-x/lineup/bx04.html",
+      "parts": {
+        "blade": "ナイトシールド",
+        "ratchet": "3-80",
+        "bit": "N"
+      }
+    },
+    {
+      "title": "BX-03ウィザードアロー4-80B",
+      "price": "¥1,980（税込）",
+      "link": "https://beyblade.takaratomy.co.jp/beyblade-x/lineup/bx03.html",
+      "parts": {
+        "blade": "ウィザードアロー",
+        "ratchet": "4-80",
+        "bit": "B"
+      }
+    },
+    {
+      "title": "BX-02ヘルズサイズ4-60T",
+      "price": "¥1,980（税込）",
+      "link": "https://beyblade.takaratomy.co.jp/beyblade-x/lineup/bx02.html",
+      "parts": {
+        "blade": "ヘルズサイズ",
+        "ratchet": "4-60",
+        "bit": "T"
+      }
+    },
+    {
+      "title": "BX-01ドランソード3-60F",
+      "price": "¥1,980（税込）",
+      "link": "https://beyblade.takaratomy.co.jp/beyblade-x/lineup/bx01.html",
+      "parts": {
+        "blade": "ドランソード",
+        "ratchet": "3-60",
+        "bit": "F"
+      }
+    }
+  ]
+}
