@@ -1,71 +1,93 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
-import puppeteer from "puppeteer";
+import puppeteer from "puppeteer-core";
+import chromium from "chrome-aws-lambda";
+
 let date = new Date();
-
+let scrapedData;
 export async function GET() {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.goto("https://beyblade.takaratomy.co.jp/beyblade-x/lineup/");
+  let browser = null;
 
-  // Wait for the selector to appear in page
-  await page.waitForSelector("ul.container.lineupList");
+  try {
+    // Set up Puppeteer options.
+    const options = {
+      args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath,
+      headless: true,
+      ignoreHTTPSErrors: true,
+    };
 
-  const beybladeData = await page.evaluate(() => {
-    const productList = Array.from(
-      document.querySelectorAll("ul.container.lineupList li")
-    );
+    // Launch the browser.
+    browser = await puppeteer.launch(options);
 
-    return productList
-      .map((product) => {
-        const titleElement = product.querySelector("b");
-        const priceElement = product.querySelector("i");
-        const linkElement = product.querySelector("a");
+    const page = await browser.newPage();
+    await page.goto("https://beyblade.takaratomy.co.jp/beyblade-x/lineup/");
 
-        let title = titleElement ? titleElement.innerText : null;
-        let price = priceElement ? priceElement.innerText : null;
-        let link = linkElement ? linkElement.href : null;
+    // Wait for the selector to appear in page
+    await page.waitForSelector("ul.container.lineupList");
 
-        let blade = null;
-        let ratchet = null;
-        let bit = null;
-
-        if (title) {
-          let regex = /(.*?)([ァ-ヶー]+)(\d+-\d+)(.+)/;
-          let parts = title.match(regex);
-          if (parts) {
-            blade = parts[2];
-            ratchet = parts[3];
-            bit = parts[4];
-          }
-        }
-
-        return {
-          title: title,
-          price: price,
-          link: link,
-          parts: {
-            blade: blade,
-            ratchet: ratchet,
-            bit: bit,
-          },
-        };
-      })
-      .filter(
-        (product) =>
-          product.parts.blade && product.parts.ratchet && product.parts.bit
+    const beybladeData = await page.evaluate(() => {
+      const productList = Array.from(
+        document.querySelectorAll("ul.container.lineupList li")
       );
-  });
 
-  await browser.close();
+      return productList
+        .map((product) => {
+          const titleElement = product.querySelector("b");
+          const priceElement = product.querySelector("i");
+          const linkElement = product.querySelector("a");
 
-  // Return the scraped data
-  // Save the data to beybladeData.json
-  const scrapedData = {
-    updateAt: date.toISOString(),
-    beybladeData: beybladeData,
-  };
+          let title = titleElement ? titleElement.innerText : null;
+          let price = priceElement ? priceElement.innerText : null;
+          let link = linkElement ? linkElement.href : null;
+
+          let blade = null;
+          let ratchet = null;
+          let bit = null;
+
+          if (title) {
+            let regex = /(.*?)([ァ-ヶー]+)(\d+-\d+)(.+)/;
+            let parts = title.match(regex);
+            if (parts) {
+              blade = parts[2];
+              ratchet = parts[3];
+              bit = parts[4];
+            }
+          }
+
+          return {
+            title: title,
+            price: price,
+            link: link,
+            parts: {
+              blade: blade,
+              ratchet: ratchet,
+              bit: bit,
+            },
+          };
+        })
+        .filter(
+          (product) =>
+            product.parts.blade && product.parts.ratchet && product.parts.bit
+        );
+    });
+
+    scrapedData = {
+      updateAt: date.toISOString(),
+      beybladeData: beybladeData,
+    };
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: "Failed to launch the browser." });
+  } finally {
+    // Make sure the browser is properly closed before returning.
+    if (browser) {
+      await browser.close();
+    }
+  }
+
   const filePath = path.resolve(process.cwd(), "beybladeData.json");
   fs.writeFileSync(filePath, JSON.stringify(scrapedData, null, 2));
 
